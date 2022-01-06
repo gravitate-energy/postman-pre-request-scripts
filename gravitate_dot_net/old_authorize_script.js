@@ -1,5 +1,5 @@
 
-// test
+
 var sdk = require('postman-collection');
 var authServiceUrl = FillVariableFromEnvironmentOrCollection('authService');
 console.log(`Auth Service URL: ${authServiceUrl}`) 
