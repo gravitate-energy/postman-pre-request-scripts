@@ -1,6 +1,6 @@
 var sdk = require('postman-collection');
-var authServiceUrl = BuildURL('authService');
-console.log(`Auth Service URL: ${authServiceUrl}`)
+var authServiceUrl = FillVariableFromEnvironmentOrCollection('authService');
+console.log(`Auth Service URL: ${authServiceUrl}`) 
 
 var alwaysRefresh = GetFromEnvironmentOrCollection('alwaysRefresh');
 if(alwaysRefresh == 'true'){
@@ -50,7 +50,7 @@ function RefreshToken() {
 
 function ValidateAndRefreshToken(){
     console.log(validationService)
-    var validationService = BuildURL('validationService');
+    var validationService = FillVariableFromEnvironmentOrCollection('validationService');
     console.log(validationService)
     var isValidTokenRequest = new sdk.Request({
         url: validationService, // Use an endpoint that requires being authenticated
@@ -100,10 +100,16 @@ function GetFromEnvironmentOrCollection(variableName, required){
 
     return result;
 }
-// Fills a URL value from the environment with a value from the collection
-function BuildURL(paramName){
-    var result = pm.environment.replaceIn(
-        pm.collectionVariables.replaceIn(pm.collectionVariables.get(paramName))
-    );
+
+// given a string sourced from a variable, attempt to fill in any {{var}} values from the environment or collection variables
+function FillVariableFromEnvironmentOrCollection(paramName){
+    var replace = GetFromEnvironmentOrCollection(paramName)
+    return FillFromEnvironmentOrCollection(replace);
+}
+
+// given a string, attempt to fill in any {{var}} values from the environment or collection variables
+function FillFromEnvironmentOrCollection(inputString){
+    var result = pm.environment.replaceIn(inputString); // attempts to fill any {{var}} values from the environment
+    result = pm.collectionVariables.replaceIn(result); // attempts to fill any {{var}} values from the collection variables
     return result;
 }
