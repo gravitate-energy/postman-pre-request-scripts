@@ -1,7 +1,7 @@
 
 
 var sdk = require('postman-collection');
-var authServiceUrl = FillVariableFromEnvironmentOrCollection('authService');
+var authServiceUrl = FillFromEnvironmentOrCollection('{{baseUrl}}/api/Authorize/Authenticate');
 console.log(`Auth Service URL: ${authServiceUrl}`) 
 
 var alwaysRefresh = GetFromEnvironmentOrCollection('alwaysRefresh');
@@ -52,7 +52,7 @@ function RefreshToken() {
 
 function ValidateAndRefreshToken(){
     console.log(validationService)
-    var validationService = FillVariableFromEnvironmentOrCollection('validationService');
+    var validationService = FillFromEnvironmentOrCollection('{{baseUrl}}/api/Authorize/ValidateAuthorization');
     console.log(validationService)
     var isValidTokenRequest = new sdk.Request({
         url: validationService, // Use an endpoint that requires being authenticated
