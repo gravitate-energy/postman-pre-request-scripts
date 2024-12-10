@@ -35,7 +35,7 @@ function ExecuteAuthorizationPreRequest(){
 function EvaluateGithubScript(baseUrl, scriptName, logResponse){
     var uuid = require('uuid');
     // adding token and a random string causes github raw to return the latest result and bypass its cache
-    var cacheBuster = `token=${uuid.v4()}` 
+    var cacheBuster = `v=${uuid.v4()}` 
     var requestUrl = `${baseUrl}/${scriptName}?${cacheBuster}`
     console.log(`Script URL: ${requestUrl}`)
     pm.sendRequest(requestUrl, function (err, res) {
